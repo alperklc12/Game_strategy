@@ -18,7 +18,7 @@ def main(city: City):
             city.economy.add_worker_fn()
 
         elif cmd == "c":
-            urt = city.economy.calculate_prodct_fn()
+            urt = city.economy.calculate_product_fn()
 
         elif cmd == "s":
             capital = city.economy.get_capital_fn()
