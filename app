@@ -1,32 +1,32 @@
-from game import Sehir
+from game import City
 
-MENU = "\n***SECİM YAP***\nCalisan Ekle-[a]\nUretim Hesapla-[r]\nSermaye Goster-[g]\nÇık-[q]\n"
-sehirler = [("istanbul", (8, 40)), ("adana", (6, 45))]
+MENU = "\n*** Choose ***\n[A]dd Worker\n[C]alculate Production-[r]\n[S]how Capital-[g]\nE[x]it\n"
+cites = [("istanbul", (8, 40)), ("adana", (6, 45))]
 
 
-def main(sehir: Sehir):
-    print("{} Bilgileri Yuklendi".format(sehir.name.upper()))
+def main(city: City):
+    print("{} Information Uploaded".format(city.name.upper()))
 
     while True:
         cmd = input(MENU)
 
-        if cmd == "q":
-            print("Oyun bitti!")
+        if cmd == "x":
+            print("Game Over!")
             break
 
         if cmd == "a":
-            sehir.ekonomi.isci_ekle_fn()
+            city.economy.add_worker_fn()
 
-        elif cmd == "r":
-            urt = sehir.ekonomi.uretim_hesapla_fn()
+        elif cmd == "c":
+            urt = city.economy.calculate_prodct_fn()
 
-        elif cmd == "g":
-            sermaye = sehir.ekonomi.get_sermaye_fn()
-            calisan_say = sehir.ekonomi.get_isci_sayisi_fn()
-            print("*** SON DURUM ***")
-            print("Toplam Sermaye: {}\nIsci Sayisi: {}".format(sermaye, calisan_say))
+        elif cmd == "s":
+            capital = city.economy.get_capital_fn()
+            worker_num = city.economy.get_worker_nums_fn()
+            print("*** STATUS ***")
+            print("Total Capital: {}\nWorkers Num: {}".format(capital, worker_num))
 
 
-shr_current = sehirler[0]
-istanbul = Sehir(*shr_current)
+city_current = cites[0]
+istanbul = City(*city_current)
 main(istanbul)
