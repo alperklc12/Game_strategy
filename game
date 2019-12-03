@@ -40,7 +40,7 @@ class Economy:
     def calculate_product_fn(self):
         total_product = 0
         for worker in self.worker_lst:
-            current_product = worker.worker_prodct_fn()
+            current_product = worker.worker_product_fn()
             total_product += current_product
 
         self.capital += total_product
@@ -85,9 +85,9 @@ class Building:
 
 
 class Worker:
-    def __init__(self, prodct, cost):
-        self.product = prodct
+    def __init__(self, product, cost):
+        self.product = product
         self.cost = cost
 
-    def worker_prodct_fn(self):
+    def worker_product_fn(self):
         return random.randint(self.product - 5, self.product + 5)
