@@ -1,6 +1,6 @@
 from game import City
 
-MENU = "\n*** Choose ***\n[A]dd Worker\n[C]alculate Production-[r]\n[S]how Capital-[g]\nE[x]it\n"
+MENU = "\n*** Choose ***\n[A]dd Worker\n[C]alculate Production\n[S]how Capital\nE[x]it\n"
 cites = [("istanbul", (8, 40)), ("adana", (6, 45))]
 
 
