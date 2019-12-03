@@ -1,0 +1,93 @@
+import random
+import json
+
+
+class Sehir:
+    def __init__(self, name: str, ekonomi: tuple):
+        self.name = name
+        self.ekonomi = Ekonomi(ekonomi)
+
+
+class Ekonomi:
+    def __init__(self, uretim: tuple):
+        self.uretim = uretim
+        self.sermaye = 0
+        self.isci_lst = []
+        self.data = []
+        self.binalar = []
+
+        self.load_init_fn()
+
+    def bina_ekle_fn(self, name, maliyet, seviye):
+        bina = Bina(name, maliyet, seviye)
+        if maliyet <= self.sermaye:
+            self.binalar.append(bina)
+            self.sermaye -= maliyet
+            print("Bina Eklendi")
+        else:
+            print("Yetersiz Sermaye")
+
+    def isci_ekle_fn(self):
+        isci = Isci(self.uretim[0], self.uretim[1])
+        if self.sermaye >= self.uretim[1]:
+            self.sermaye -= self.uretim[1]
+            self.isci_lst.append(isci)
+            self.save_eko_fn()
+            print("Isci Eklendi")
+        else:
+            print("Sermaye Yetersiz")
+
+    def uretim_hesapla_fn(self):
+        topl_urt = 0
+        for isci in self.isci_lst:
+            current_urt = isci.uretim_fn()
+            topl_urt += current_urt
+
+        self.sermaye += topl_urt
+        self.save_eko_fn()
+
+        return topl_urt
+
+    def get_isci_sayisi_fn(self):
+        return len(self.isci_lst)
+
+    def get_sermaye_fn(self):
+        return self.sermaye
+
+    def load_init_fn(self):
+        self.data = self._load_json_fl()
+        self.sermaye = self.data[-1]["sermaye"]
+
+        for i in range(self.data[-1]["isci_sayisi"]):
+            isci = Isci(self.uretim[0], self.uretim[1])
+            self.isci_lst.append(isci)
+
+    def _load_json_fl(self):
+        with open("data.json", "r") as fl:
+            data = json.load(fl)
+        return data
+
+    def save_eko_fn(self):
+        isci = len(self.isci_lst)
+        sermaye = self.sermaye
+
+        self.data.append({"sermaye": sermaye, "isci_sayisi": isci})
+
+        with open("data.json", "w") as fl:
+            json.dump(self.data, fl)
+
+
+class Bina:
+    def __init__(self, name, maliyet, seviye):
+        self.name = name
+        self.maliyet = maliyet
+        self.seviye = seviye
+
+
+class Isci:
+    def __init__(self, uretim, tuketim):
+        self.uretim = uretim
+        self.tuketim = tuketim
+
+    def uretim_fn(self):
+        return random.randint(self.uretim - 5, self.uretim + 5)
