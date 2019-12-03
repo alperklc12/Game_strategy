@@ -2,65 +2,65 @@ import random
 import json
 
 
-class Sehir:
-    def __init__(self, name: str, ekonomi: tuple):
+class City:
+    def __init__(self, name: str, economy: tuple):
         self.name = name
-        self.ekonomi = Ekonomi(ekonomi)
+        self.economy = Economy(economy)
 
 
-class Ekonomi:
-    def __init__(self, uretim: tuple):
-        self.uretim = uretim
-        self.sermaye = 0
-        self.isci_lst = []
+class Economy:
+    def __init__(self, product: tuple):
+        self.product = product
+        self.capital = 0
+        self.worker_lst = []
         self.data = []
-        self.binalar = []
+        self.building = []
 
         self.load_init_fn()
 
-    def bina_ekle_fn(self, name, maliyet, seviye):
-        bina = Bina(name, maliyet, seviye)
-        if maliyet <= self.sermaye:
-            self.binalar.append(bina)
-            self.sermaye -= maliyet
-            print("Bina Eklendi")
+    def add_building_fn(self, name, cost, level):
+        building = Building(name, cost, level)
+        if cost <= self.capital:
+            self.building.append(building)
+            self.capital -= cost
+            print("Building added")
         else:
-            print("Yetersiz Sermaye")
+            print("Capital is insufficient")
 
-    def isci_ekle_fn(self):
-        isci = Isci(self.uretim[0], self.uretim[1])
-        if self.sermaye >= self.uretim[1]:
-            self.sermaye -= self.uretim[1]
-            self.isci_lst.append(isci)
+    def add_worker_fn(self):
+        worker = Worker(self.product[0], self.product[1])
+        if self.capital >= self.product[1]:
+            self.capital -= self.product[1]
+            self.worker_lst.append(worker)
             self.save_eko_fn()
-            print("Isci Eklendi")
+            print("Worker is added")
         else:
-            print("Sermaye Yetersiz")
+            print("Capital is insufficient")
 
-    def uretim_hesapla_fn(self):
-        topl_urt = 0
-        for isci in self.isci_lst:
-            current_urt = isci.uretim_fn()
-            topl_urt += current_urt
+    def calculate_prodct_fn(self):
+        total_prodct = 0
+        for worker in self.worker_lst:
+            current_urt = worker.uretim_fn()
+            total_prodct += current_urt
 
-        self.sermaye += topl_urt
+        self.capital += total_prodct
         self.save_eko_fn()
 
-        return topl_urt
+        return total_prodct
 
-    def get_isci_sayisi_fn(self):
-        return len(self.isci_lst)
+    def get_worker_nums_fn(self):
+        return len(self.worker_lst)
 
-    def get_sermaye_fn(self):
-        return self.sermaye
+    def get_capital_fn(self):
+        return self.capital
 
     def load_init_fn(self):
         self.data = self._load_json_fl()
-        self.sermaye = self.data[-1]["sermaye"]
+        self.capital = self.data[-1]["capital"]
 
-        for i in range(self.data[-1]["isci_sayisi"]):
-            isci = Isci(self.uretim[0], self.uretim[1])
-            self.isci_lst.append(isci)
+        for i in range(self.data[-1]["worker_nums"]):
+            worker = Worker(self.product[0], self.product[1])
+            self.worker_lst.append(worker)
 
     def _load_json_fl(self):
         with open("data.json", "r") as fl:
@@ -68,26 +68,26 @@ class Ekonomi:
         return data
 
     def save_eko_fn(self):
-        isci = len(self.isci_lst)
-        sermaye = self.sermaye
+        worker = len(self.worker_lst)
+        capital = self.capital
 
-        self.data.append({"sermaye": sermaye, "isci_sayisi": isci})
+        self.data.append({"sermaye": capital, "isci_sayisi": worker})
 
         with open("data.json", "w") as fl:
             json.dump(self.data, fl)
 
 
-class Bina:
-    def __init__(self, name, maliyet, seviye):
+class Building:
+    def __init__(self, name, cost, level):
         self.name = name
-        self.maliyet = maliyet
-        self.seviye = seviye
+        self.cost = cost
+        self.level = level
 
 
-class Isci:
-    def __init__(self, uretim, tuketim):
-        self.uretim = uretim
-        self.tuketim = tuketim
+class Worker:
+    def __init__(self, prodct, cost):
+        self.prodct = prodct
+        self.cost = cost
 
-    def uretim_fn(self):
-        return random.randint(self.uretim - 5, self.uretim + 5)
+    def worker_prodct_fn(self):
+        return random.randint(self.prodct - 5, self.prodct + 5)
