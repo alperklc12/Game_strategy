@@ -37,16 +37,16 @@ class Economy:
         else:
             print("Capital is insufficient")
 
-    def calculate_prodct_fn(self):
-        total_prodct = 0
+    def calculate_product_fn(self):
+        total_product = 0
         for worker in self.worker_lst:
-            current_urt = worker.uretim_fn()
-            total_prodct += current_urt
+            current_product = worker.worker_prodct_fn()
+            total_product += current_product
 
-        self.capital += total_prodct
+        self.capital += total_product
         self.save_eko_fn()
 
-        return total_prodct
+        return total_product
 
     def get_worker_nums_fn(self):
         return len(self.worker_lst)
@@ -71,7 +71,7 @@ class Economy:
         worker = len(self.worker_lst)
         capital = self.capital
 
-        self.data.append({"sermaye": capital, "isci_sayisi": worker})
+        self.data.append({"capital": capital, "worker_nums": worker})
 
         with open("data.json", "w") as fl:
             json.dump(self.data, fl)
@@ -86,8 +86,8 @@ class Building:
 
 class Worker:
     def __init__(self, prodct, cost):
-        self.prodct = prodct
+        self.product = prodct
         self.cost = cost
 
     def worker_prodct_fn(self):
-        return random.randint(self.prodct - 5, self.prodct + 5)
+        return random.randint(self.product - 5, self.product + 5)
